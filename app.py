@@ -187,4 +187,4 @@ def generate_dokumen_route():
                            bulan_prosem=bulan_prosem)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
