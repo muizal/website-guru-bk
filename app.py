@@ -3,7 +3,8 @@ from flask import Flask, request, render_template
 app = Flask(__name__)
 
 # ==============================================================================
-# DATA CP (CAPAIAN PEMBELAJARAN) - EKSTRAKSI DETAIL DARI PDF BSKAP
+# PASTIKAN BAGIAN DATA CP INI SAMA PERSIS SEPERTI DI BAWAH INI
+# Data CP (Capaian Pembelajaran) - Ekstraksi Detail dari PDF BSKAP
 # Menggunakan CP dari Pendidikan Pancasila sebagai basis layanan BK
 # ==============================================================================
 data_cp = {
@@ -85,7 +86,6 @@ data_cp = {
 # ==============================================================================
 
 def petakan_ke_bidang_bk(kalimat):
-    """Fungsi untuk memetakan kalimat ke 4 Bidang Layanan BK berdasarkan kata kunci."""
     kalimat = kalimat.lower()
     if any(kata in kalimat for kata in ["karir", "profesi", "usaha", "pekerjaan", "wirausaha", "ekonomi"]):
         return "Karir"
@@ -95,10 +95,9 @@ def petakan_ke_bidang_bk(kalimat):
         return "Sosial"
     if any(kata in kalimat for kata in ["pribadi", "akhlak", "emosi", "identitas diri", "sikap", "norma", "aturan", "hak", "kewajiban", "nilai-nilai"]):
         return "Pribadi"
-    return "Pribadi" # Default
+    return "Pribadi"
 
 def buat_saran_kegiatan(kalimat):
-    """Fungsi untuk memberi saran kegiatan 'Pembelajaran Mendalam'."""
     kalimat = kalimat.lower()
     if any(kata in kalimat for kata in ["menganalisis", "membandingkan", "mengevaluasi"]):
         return "Diskusi Kelompok, Debat Terstruktur, Analisis Studi Kasus, Membuat Peta Pikiran (Mind Mapping)."
@@ -109,13 +108,10 @@ def buat_saran_kegiatan(kalimat):
     return "Diskusi dan tanya jawab, Refleksi diri."
 
 def generate_analisis_cl(daftar_cp):
-    """Fungsi utama untuk menghasilkan Analisis CL, TL, KKTL, dll."""
     hasil_analisis = []
     for cp in daftar_cp:
-        # Membuat Tujuan Layanan (TL)
         tl = cp.replace("Mengenal", "Siswa dapat mengenal").replace("Menerapkan", "Siswa dapat menerapkan").replace("Mengidentifikasi", "Siswa dapat mengidentifikasi").replace("Membedakan", "Siswa dapat membedakan").replace("Memahami", "Siswa dapat memahami").replace("Menghubungkan", "Siswa dapat menghubungkan").replace("Mengimplementasikan", "Siswa dapat mengimplementasikan").replace("Mempraktikkan", "Siswa dapat mempraktikkan").replace("Menyajikan", "Siswa dapat menyajikan").replace("Menunjukkan", "Siswa dapat menunjukkan").replace("Menggunakan", "Siswa dapat menggunakan").replace("Menerima", "Siswa dapat menerima").replace("Menumbuhkan", "Siswa dapat menumbuhkan").replace("Menganalisis", "Siswa dapat menganalisis").replace("Membiasakan", "Siswa dapat membiasakan").replace("Merancang", "Siswa dapat merancang")
         
-        # Membuat Saran KKTL
         kktl = "Siswa menunjukkan perubahan perilaku/pemahaman yang relevan melalui observasi atau unjuk kerja."
         if "mengenal" in tl or "memahami" in tl or "mengidentifikasi" in tl:
             kktl = "Siswa mampu menyebutkan, menjelaskan, atau memberi contoh terkait tujuan layanan."
@@ -134,14 +130,12 @@ def generate_analisis_cl(daftar_cp):
     return hasil_analisis
 
 def generate_prosem(analisis_data, semester):
-    """Fungsi untuk membuat draf Program Semester (PROSEM)."""
     prosem = {
         'Pribadi': [], 'Sosial': [], 'Belajar': [], 'Karir': []
     }
     for item in analisis_data:
         prosem[item['bidang']].append(item['tl'])
 
-    # Menentukan bulan berdasarkan semester
     if semester.lower() == 'ganjil':
         bulan = ["Juli", "Agustus", "September", "Oktober", "November", "Desember"]
     else:
@@ -172,13 +166,9 @@ def generate_dokumen_route():
     if not cp_data:
         return "Fase tidak valid."
 
-    # 1. Generate Dokumen Analisis CL
     hasil_analisis = generate_analisis_cl(cp_data['cp_list'])
-    
-    # 2. Generate Dokumen PROSEM
     prosem_data, bulan_prosem = generate_prosem(hasil_analisis, data_guru['semester'])
 
-    # Kirim semua data ke halaman hasil
     return render_template('hasil.html', 
                            data_guru=data_guru, 
                            fase=cp_data,
@@ -187,4 +177,4 @@ def generate_dokumen_route():
                            bulan_prosem=bulan_prosem)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(debug=True)
