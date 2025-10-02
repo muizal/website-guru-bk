@@ -6,108 +6,236 @@
     <title>Hasil Dokumen Layanan BK</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
+        body { background-color: #fff; }
+        .document-container {
+            background-color: #fff;
+            padding: 2.5cm 2cm;
+            margin: 20px auto;
+            max-width: 21cm;
+            min-height: 29.7cm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
         .page-break { page-break-after: always; }
-        .doc-title { text-align: center; margin-bottom: 30px; }
-        .doc-title h2, .doc-title p { margin: 2px 0; }
-        .info-table { width: 50%; margin-bottom: 20px; }
-        .info-table td { border: none; padding: 2px 8px; }
+        .doc-title { text-align: center; margin-bottom: 25px; line-height: 1.5; }
+        .doc-title h3, .doc-title p { margin: 0; }
+        .info-table { width: 100%; margin-bottom: 20px; font-size: 11pt; }
+        .info-table td { border: none; padding: 2px 0; vertical-align: top; }
+        .info-table td:first-child { width: 30%; }
+        .info-table td:nth-child(2) { width: 5%; }
+        table { font-size: 10pt; }
+        th, td { vertical-align: top; }
+        .signature-block {
+            margin-top: 50px;
+            page-break-inside: avoid;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature { width: 45%; text-align: center; }
+        .signature p { margin-bottom: 60px; }
         .btn-print {
-            display: block; width: 150px; margin: 20px auto;
+            display: block; width: 180px; margin: 20px auto;
             padding: 10px; background-color: #007bff; color: white;
             text-align: center; text-decoration: none; border-radius: 5px;
         }
-        @media print { .no-print { display: none; } }
+        .rpl-section { margin-top: 15px; }
+        .rpl-section h5 { margin-bottom: 5px; }
+        @media print {
+            body { background-color: #fff; margin: 0; padding: 0; }
+            .no-print { display: none; }
+            .document-container {
+                box-shadow: none; margin: 0; padding: 0;
+                width: 100%; min-height: 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <main class="container">
-        <a href="javascript:window.print()" class="btn-print no-print">Cetak Halaman Ini</a>
-        
-        <div class="document-wrapper">
-            <div class="doc-title">
-                <h2>ANALISIS CAPAIAN LAYANAN BIMBINGAN DAN KONSELING</h2>
-                <h4>TAHUN AJARAN {{ data_guru.tahun_ajaran }}</h4>
-            </div>
-            <table class="info-table">
-                <tr><td>Satuan Pendidikan</td><td>: {{ data_guru.nama_sekolah }}</td></tr>
-                <tr><td>Guru Bimbingan Konseling</td><td>: {{ data_guru.nama_guru }}</td></tr>
-                <tr><td>Fase</td><td>: {{ fase.elemen }}</td></tr>
-            </table>
+    <div class="no-print" style="text-align:center; padding: 10px;">
+        <a href="javascript:window.print()" class="btn-print">Cetak / Simpan ke PDF</a>
+        <a href="/" class="tombol-kembali">Kembali</a>
+    </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th rowspan="2">No</th>
-                        <th rowspan="2">Capaian Pembelajaran (Adaptasi)</th>
-                        <th colspan="4">Tujuan Layanan</th>
-                    </tr>
-                    <tr>
-                        <th>Rumusan Tujuan</th>
-                        <th>Bidang Layanan</th>
-                        <th>Saran KKTL</th>
-                        <th>Saran Kegiatan (Pembelajaran Mendalam)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in hasil_analisis %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ item.cp }}</td>
-                        <td>{{ item.tl }}</td>
-                        <td>{{ item.bidang }}</td>
-                        <td>{{ item.kktl }}</td>
-                        <td>{{ item.kegiatan }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="document-container">
+        <div class="doc-title">
+            <h3>ANALISIS CAPAIAN LAYANAN BIMBINGAN DAN KONSELING</h3>
+            <p>TAHUN AJARAN {{ data_guru.tahun_ajaran }}</p>
+        </div>
+        <table class="info-table">
+            <tr><td>Satuan Pendidikan</td><td>:</td><td>{{ data_guru.nama_sekolah }}</td></tr>
+            <tr><td>Guru Bimbingan Konseling</td><td>:</td><td>{{ data_guru.nama_guru }}</td></tr>
+            <tr><td>Fase</td><td>:</td><td>{{ fase.elemen }}</td></tr>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">No</th>
+                    <th rowspan="2">Capaian Pembelajaran (Adaptasi)</th>
+                    <th colspan="4">Tujuan Layanan</th>
+                </tr>
+                <tr>
+                    <th>Rumusan Tujuan</th>
+                    <th>Bidang Layanan</th>
+                    <th>Saran KKTL</th>
+                    <th>Saran Kegiatan (Pembelajaran Mendalam)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in hasil_analisis %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.cp }}</td>
+                    <td>{{ item.tl }}</td>
+                    <td>{{ item.bidang }}</td>
+                    <td>{{ item.kktl }}</td>
+                    <td>{{ item.kegiatan }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="signature-block">
+            <div class="signature">
+                <p>Mengetahui,<br>Kepala Sekolah</p>
+                <p>_________________________<br>NIP. ............................</p>
+            </div>
+            <div class="signature">
+                <p>..., {{ tanggal_pembuatan }}<br>Guru Bimbingan dan Konseling</p>
+                <p>{{ data_guru.nama_guru }}<br>NIP. {{ data_guru.nip if data_guru.nip else '............................' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="document-container">
+        <div class="doc-title">
+            <h3>PROGRAM TAHUNAN (PROTA)</h3>
+            <p>TAHUN AJARAN {{ data_guru.tahun_ajaran }}</p>
+        </div>
+        <table class="info-table">
+            <tr><td>Satuan Pendidikan</td><td>:</td><td>{{ data_guru.nama_sekolah }}</td></tr>
+            <tr><td>Guru Bimbingan Konseling</td><td>:</td><td>{{ data_guru.nama_guru }}</td></tr>
+        </table>
+        <table>
+            <thead><tr><th>Semester</th><th>Topik / Tujuan Layanan</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td rowspan="
+                        {% if prota_data.Ganjil %}{{ prota_data.Ganjil|length }}{% else %}1{% endif %}
+                    ">GANJIL</td>
+                    <td>{% if prota_data.Ganjil %}{{ prota_data.Ganjil[0] }}{% else %}-{% endif %}</td>
+                </tr>
+                {% for i in range(1, prota_data.Ganjil|length) %}
+                <tr><td>{{ prota_data.Ganjil[i] }}</td></tr>
+                {% endfor %}
+                <tr>
+                    <td rowspan="
+                        {% if prota_data.Genap %}{{ prota_data.Genap|length }}{% else %}1{% endif %}
+                    ">GENAP</td>
+                    <td>{% if prota_data.Genap %}{{ prota_data.Genap[0] }}{% else %}-{% endif %}</td>
+                </tr>
+                {% for i in range(1, prota_data.Genap|length) %}
+                <tr><td>{{ prota_data.Genap[i] }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
         </div>
 
-        <div class="page-break"></div>
+    <div class="page-break"></div>
 
-        <div class="document-wrapper">
-            <div class="doc-title">
-                <h2>DRAF PROGRAM SEMESTER (PROSEM)</h2>
-                <h4>SEMESTER {{ data_guru.semester.upper() }} TAHUN AJARAN {{ data_guru.tahun_ajaran }}</h4>
-            </div>
-             <table class="info-table">
-                <tr><td>Satuan Pendidikan</td><td>: {{ data_guru.nama_sekolah }}</td></tr>
-                <tr><td>Guru Bimbingan Konseling</td><td>: {{ data_guru.nama_guru }}</td></tr>
-            </table>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Bidang Layanan</th>
-                        <th>Tujuan Layanan</th>
-                        {% for bulan in bulan_prosem %}
-                        <th>{{ bulan }}</th>
+    <div class="document-container">
+        <div class="doc-title">
+            <h3>PROGRAM SEMESTER (PROSEM)</h3>
+            <p>SEMESTER {{ data_guru.semester.upper() }} TAHUN AJARAN {{ data_guru.tahun_ajaran }}</p>
+        </div>
+        <table class="info-table">
+            <tr><td>Satuan Pendidikan</td><td>:</td><td>{{ data_guru.nama_sekolah }}</td></tr>
+            <tr><td>Guru Bimbingan Konseling</td><td>:</td><td>{{ data_guru.nama_guru }}</td></tr>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">Bidang Layanan</th><th rowspan="2">Topik / Tujuan Layanan</th>
+                    <th colspan="{{ bulan_prosem|length }}">Bulan</th>
+                    <th rowspan="2">Ket.</th>
+                </tr>
+                <tr>{% for bulan in bulan_prosem %}<th>{{ bulan }}</th>{% endfor %}</tr>
+            </thead>
+            <tbody>
+                {% for bidang, daftar_tl in prosem_data.items() %}
+                    {% if daftar_tl %}
+                        <tr>
+                            <td rowspan="{{ daftar_tl|length }}">{{ bidang }}</td>
+                            <td>{{ daftar_tl[0] }}</td>
+                            {% for _ in bulan_prosem %}<td></td>{% endfor %}<td></td>
+                        </tr>
+                        {% for i in range(1, daftar_tl|length) %}
+                        <tr>
+                            <td>{{ daftar_tl[i] }}</td>
+                            {% for _ in bulan_prosem %}<td></td>{% endfor %}<td></td>
+                        </tr>
                         {% endfor %}
-                        <th>Ket.</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for bidang, daftar_tl in prosem_data.items() %}
-                        {% if daftar_tl %}
-                            <tr>
-                                <td rowspan="{{ daftar_tl|length }}">{{ bidang }}</td>
-                                <td>{{ daftar_tl[0] }}</td>
-                                {% for _ in bulan_prosem %}<td></td>{% endfor %}
-                                <td></td>
-                            </tr>
-                            {% for i in range(1, daftar_tl|length) %}
-                            <tr>
-                                <td>{{ daftar_tl[i] }}</td>
-                                {% for _ in bulan_prosem %}<td></td>{% endfor %}
-                                <td></td>
-                            </tr>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
         </div>
-        <a href="/" class="tombol-kembali no-print" style="margin: 20px auto; display: block; width: 200px; text-align:center;">Kembali ke Halaman Utama</a>
-    </main>
+
+    {% for rpl in rpl_templates %}
+    <div class="page-break"></div>
+    <div class="document-container">
+        <div class="doc-title">
+            <h3>RENCANA PELAKSANAAN LAYANAN (RPL)</h3>
+            <p>BIMBINGAN KLASIKAL</p>
+        </div>
+        <table class="info-table">
+            <tr><td>Satuan Pendidikan</td><td>:</td><td>{{ data_guru.nama_sekolah }}</td></tr>
+            <tr><td>Tahun Ajaran</td><td>:</td><td>{{ data_guru.tahun_ajaran }}</td></tr>
+            <tr><td>Kelas / Semester</td><td>:</td><td>[Isi Kelas] / {{ data_guru.semester }}</td></tr>
+            <tr><td>Alokasi Waktu</td><td>:</td><td>1 x 45 Menit (Dapat disesuaikan)</td></tr>
+        </table>
+        
+        <div class="rpl-section"><h5>A. TOPIK LAYANAN</h5><p>{{ rpl.topik }}</p></div>
+        <div class="rpl-section"><h5>B. BIDANG LAYANAN</h5><p>{{ rpl.bidang }}</p></div>
+        <div class="rpl-section"><h5>C. FUNGSI LAYANAN</h5><p>Pemahaman dan Pengembangan</p></div>
+        <div class="rpl-section"><h5>D. TUJUAN LAYANAN</h5><p>{{ rpl.tujuan }}</p></div>
+        <div class="rpl-section"><h5>E. METODE DAN MEDIA</h5><p><b>Metode:</b> Ceramah Interaktif, Diskusi Kelompok, Tanya Jawab<br><b>Media:</b> Video, Power Point, Papan Tulis</p></div>
+        <div class="rpl-section">
+            <h5>F. LANGKAH-LANGKAH KEGIATAN</h5>
+            <ol>
+                <li><b>Tahap Awal / Pendahuluan</b><br>
+                    - Membuka dengan salam dan doa.<br>
+                    - Membina hubungan baik dengan peserta didik (menanyakan kabar, ice breaking).<br>
+                    - Menyampaikan tujuan layanan.</li>
+                <li><b>Tahap Inti / Kegiatan</b><br>
+                    - Guru BK menayangkan media yang berhubungan dengan materi.<br>
+                    - Peserta didik mengamati media dan melakukan curah pendapat.<br>
+                    - Guru BK memberikan penjelasan materi (disarankan menggunakan: <i>{{ rpl.kegiatan_inti }}</i>).<br>
+                    - Peserta didik diberi kesempatan bertanya dan berdiskusi.</li>
+                <li><b>Tahap Penutup</b><br>
+                    - Guru BK mengajak peserta didik membuat kesimpulan.<br>
+                    - Guru BK menyampaikan pengumuman untuk pertemuan berikutnya.<br>
+                    - Mengakhiri kegiatan dengan doa dan salam.</li>
+            </ol>
+        </div>
+        <div class="rpl-section">
+            <h5>G. EVALUASI</h5>
+            <p><b>Evaluasi Proses:</b> Mengamati antusiasme dan partisipasi peserta didik selama kegiatan layanan.<br>
+            <b>Evaluasi Hasil:</b> Peserta didik mengisi lembar refleksi atau menjawab pertanyaan lisan terkait pemahaman topik.</p>
+        </div>
+        <div class="signature-block">
+            <div class="signature">
+                <p>Mengetahui,<br>Kepala Sekolah</p>
+                <p>_________________________<br>NIP. ............................</p>
+            </div>
+            <div class="signature">
+                <p>..., {{ tanggal_pembuatan }}<br>Guru Bimbingan dan Konseling</p>
+                <p>{{ data_guru.nama_guru }}<br>NIP. {{ data_guru.nip if data_guru.nip else '............................' }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
 </body>
 </html>
