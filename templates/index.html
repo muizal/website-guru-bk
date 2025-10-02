@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alat Bantu Kerja Guru BK</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Alat Bantu Kerja Guru BK</h1>
+            <p>Generator Dokumen Layanan Berbasis Capaian Pembelajaran</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="generator">
+            <h2>Buat Dokumen Layanan</h2>
+            <p>Silakan isi data di bawah ini dan pilih fase untuk menghasilkan dokumen secara otomatis.</p>
+            
+            <form id="form-generator" action="/generate-dokumen" method="post">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nama_sekolah">Nama Sekolah:</label>
+                        <input type="text" id="nama_sekolah" name="nama_sekolah" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_guru">Nama Guru BK:</label>
+                        <input type="text" id="nama_guru" name="nama_guru" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nip">NIP (Opsional):</label>
+                        <input type="text" id="nip" name="nip">
+                    </div>
+                    <div class="form-group">
+                        <label for="semester">Semester:</label>
+                        <select id="semester" name="semester" required>
+                            <option value="Ganjil">Ganjil</option>
+                            <option value="Genap">Genap</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tahun_ajaran">Tahun Ajaran:</label>
+                        <input type="text" id="tahun_ajaran" name="tahun_ajaran" placeholder="Contoh: 2025/2026" required>
+                    </div>
+                </div>
+                
+                <hr>
+
+                <div class="form-group">
+                    <label for="fase">Pilih Fase Capaian Pembelajaran:</label>
+                    <select id="fase" name="fase" required>
+                        <option value="FONDASI">Fase Fondasi (PAUD/Dasar Holistik)</option>
+                        <option value="A">Fase A (Umumnya Kelas 1-2 SD)</option>
+                        <option value="B">Fase B (Umumnya Kelas 3-4 SD)</option>
+                        <option value="C">Fase C (Umumnya Kelas 5-6 SD)</option>
+                        <option value="D">Fase D (Umumnya Kelas 7-9 SMP)</option>
+                        <option value="E">Fase E (Umumnya Kelas 10 SMA/SMK)</option>
+                        <option value="F">Fase F (Umumnya Kelas 11-12 SMA/SMK)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="tombol-proses">Buat Dokumen</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Alat Bantu Kerja Guru BK.</p>
+    </footer>
+
+</body>
+</html>
