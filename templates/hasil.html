@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Analisis Dokumen</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        
+        <div class="info-header">
+            <h2>ANALISIS CAPAIAN LAYANAN BIMBINGAN DAN KONSELING</h2>
+            <p><strong>SEKOLAH:</strong> {{ data_guru.nama_sekolah }}</p>
+            <p><strong>TAHUN AJARAN:</strong> {{ data_guru.tahun_ajaran }}</p>
+        </div>
+
+        <p><strong>Nama Guru BK:</strong> {{ data_guru.nama_guru }}</p>
+        <p><strong>NIP:</strong> {{ data_guru.nip if data_guru.nip else '-' }}</p>
+        <p><strong>Fase Layanan:</strong> {{ fase.elemen }}</p>
+        <hr>
+
+        {% for elemen in hasil_analisis %}
+            <div class="doc-header">
+                <h3>Elemen: {{ elemen.nama_elemen }}</h3>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">No.</th>
+                        <th style="width: 30%;">Capaian Pembelajaran (CP)</th>
+                        <th style="width: 30%;">Tujuan Layanan (TL)</th>
+                        <th style="width: 35%;">Saran Kriteria Ketercapaian (KKTL)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in elemen.data %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.cp }}</td>
+                        <td>{{ item.tl }}</td>
+                        <td>{{ item.kktl }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+        
+        <a href="/" class="tombol-kembali no-print">Kembali ke Halaman Utama</a>
+    </main>
+</body>
+</html>
