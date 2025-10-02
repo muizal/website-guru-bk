@@ -1,0 +1,143 @@
+/* Pengaturan Dasar untuk Seluruh Halaman */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 20px;
+}
+
+/* Gaya untuk Header */
+header {
+    background-color: #0056b3;
+    color: #ffffff;
+    padding: 20px 0;
+    border-bottom: #003d82 3px solid;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2em;
+}
+
+main {
+    padding: 20px 0;
+}
+
+section {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Gaya untuk Formulir */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box; /* Agar padding tidak menambah lebar */
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 20px 0;
+}
+
+.tombol-proses {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+
+.tombol-proses:hover {
+    background-color: #218838;
+}
+
+/* Gaya untuk Halaman Hasil */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    background-color: #0056b3;
+    color: white;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.info-header, .doc-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.info-header h2, .info-header p {
+    margin: 2px 0;
+}
+.tombol-kembali {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* Pengaturan untuk Cetak/Print */
+@media print {
+    body { font-size: 10pt; }
+    .no-print, footer, header { display: none; }
+    .container { width: 100%; }
+    section { box-shadow: none; border: 1px solid #ddd; }
+}
+
+/* Gaya untuk Footer */
+footer {
+    background: #333;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
